@@ -1,59 +1,51 @@
-function GetBook (database) {
-  return (call, callback) => {
-    const { bookId } = call.request
-    try {
-      const book = assertBook(database, bookId)
-      return callback(null, { books: book })
-    } catch (error) {
-      return callback(error, null)
-    }
+const inject = require('../lib/inject')
+
+function GetBook (call, callback, database) {
+  const { bookId } = call.request
+  try {
+    const book = assertBook(database, bookId)
+    return callback(null, { books: book })
+  } catch (error) {
+    return callback(error, null)
   }
 }
 
-function UpdateBook (database) {
-  return (call, callback) => {
-    const { bookId, data } = call.request
-    try {
-      assertBook(database, bookId)
-      const newBook = database.updateBook(bookId, data)
-      database.save()
-      return callback(null, { books: newBook })
-    } catch (error) {
-      return callback(error, null)
-    }
+function UpdateBook (call, callback, database) {
+  const { bookId, data } = call.request
+  try {
+    assertBook(database, bookId)
+    const newBook = database.updateBook(bookId, data)
+    database.save()
+    return callback(null, { books: newBook })
+  } catch (error) {
+    return callback(error, null)
   }
 }
 
-function DeleteBook (database) {
-  return (call, callback) => {
-    const { bookId } = call.request
-    try {
-      assertBook(database, bookId)
-      database.deleteBook(bookId)
-      database.save()
-      return callback(null, {})
-    } catch (error) {
-      return callback(error, null)
-    }
+function DeleteBook (call, callback, database) {
+  const { bookId } = call.request
+  try {
+    assertBook(database, bookId)
+    database.deleteBook(bookId)
+    database.save()
+    return callback(null, {})
+  } catch (error) {
+    return callback(error, null)
   }
 }
 
-function ListBook (database) {
-  return (_, callback) => {
+function ListBook (_, callback, database) {
     return callback(null, { books: database.listBooks() })
-  }
 }
 
-function CreateBook (database) {
-  return (call, callback) => {
-    const { book } = call.request
-    try {
-      const newBook = database.addBook(book)
-      database.save()
-      return callback(null, { books: newBook })
-    } catch (error) {
-      return callback(error, null)
-    }
+function CreateBook (call, callback, database) {
+  const { book } = call.request
+  try {
+    const newBook = database.addBook(book)
+    database.save()
+    return callback(null, { books: newBook })
+  } catch (error) {
+    return callback(error, null)
   }
 }
 
@@ -63,12 +55,12 @@ function assertBook (database, id) {
   return book
 }
 
-module.exports = (database) => {
+module.exports = (databaseInstance) => {
   return {
-    GetBook: GetBook(database),
-    UpdateBook: UpdateBook(database),
-    DeleteBook: DeleteBook(database),
-    ListBook: ListBook(database),
-    CreateBook: CreateBook(database)
+    GetBook: inject(GetBook, databaseInstance),
+    UpdateBook: inject(UpdateBook, databaseInstance),
+    DeleteBook: inject(DeleteBook, databaseInstance),
+    ListBook: inject(ListBook, databaseInstance),
+    CreateBook: inject(CreateBook, databaseInstance)
   }
 }
