@@ -4,11 +4,21 @@
   "description": "Projeto final da aula sobre testes com gRPC",
   "main": "index.js",
   "scripts": {
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "test": "ava --fail-fast -v -T 30s --color",
+    "coverage": "nyc --all --skip-empty ava"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rocketseat-experts-club/grpc-server-test.git"
+  },
+  "nyc": {
+    "exclude": [
+      "**/index.js",
+      "**/db.js",
+      "**/server.js",
+      "**/*.test.*"
+    ]
   },
   "keywords": [],
   "author": "Lucas Santos <hello@lsantos.dev> (https://lsantos.dev/)",
@@ -22,6 +32,10 @@
     "@grpc/proto-loader": "^0.6.4"
   },
   "devDependencies": {
-    "google-protobuf": "^3.17.3"
+    "@types/sinon": "^10.0.2",
+    "ava": "^3.15.0",
+    "google-protobuf": "^3.17.3",
+    "nyc": "^15.1.0",
+    "sinon": "^11.1.2"
   }
 }
