@@ -1,10 +1,10 @@
 <img src="https://storage.googleapis.com/golden-wind/experts-club/capa-github.svg" />
 
-# Título
+# Testes automatizados em servidores gRPC
 
-Introdução ao seu projeto. Apresentado por [Seu nome][1].
+Repositório do projeto para a aula de testes com servidores gRPC. Apresentado por [Lucas Santos][1].
 
-> __Atenção__: Este é o projeto <template/completo>, se você está procurando o projeto de <completo/template>, vá para [este repositório](https://github.com/rocketseat-experts-club/<seu projeto aqui>)
+> __Atenção__: Este é o projeto completo, se você está procurando o projeto de template, vá para [este repositório](https://github.com/rocketseat-experts-club/grpc-server-test-template)
 
 ## Instalação
 
@@ -14,9 +14,8 @@ Introdução ao seu projeto. Apresentado por [Seu nome][1].
 
 ## Expert
 
-| [<img src="https://github.com/<seu handle>.png" width="75px;"/>][1] |
+| [<img src="https://github.com/khaosdoctor.png" width="75px;"/>][1] |
 | :-: |
-|[Creator][1]|
+|[Lucas Santos][1]|
 
-
-[1]: https://seusite.com.br
+[1]: https://lsantos.dev
