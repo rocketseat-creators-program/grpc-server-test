@@ -1,5 +1,6 @@
 async function GetAuthor (call, database) {
-  return { authors: assertAuthor(database, call.request.authorId) }
+  const authors = assertAuthor(database, call.request.authorId)
+  return { authors }
 }
 
 async function UpdateAuthor (call, database) {
@@ -28,7 +29,7 @@ async function CreateAuthor (call, database) {
   return { authors: newAuthor }
 }
 
-async function assertAuthor (database, id) {
+function assertAuthor (database, id) {
   const author = database.getAuthor(id)
   if (!author) throw new Error(`Author ${id} not found`)
   return author
