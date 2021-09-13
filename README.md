@@ -8,9 +8,11 @@ Repositório do projeto para a aula de testes com servidores gRPC. Apresentado p
 
 ## Instalação
 
-1. Use este template
-2. Edite o README.md
-3. Adicione seus arquivos
+1. Execute `npm install` na raiz
+2. Execute `npm start` para iniciar o servidor
+3. Execute `npm test` para rodar os testes
+
+> Veja o branch `promises` para explicações sobre como fazer os testes em promises
 
 ## Expert
 
