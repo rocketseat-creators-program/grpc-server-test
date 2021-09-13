@@ -1,52 +1,33 @@
-const inject = require('../lib/inject')
-
-function GetBook (call, callback, database) {
+async function GetBook (call, database) {
   const { bookId } = call.request
-  try {
-    const book = assertBook(database, bookId)
-    return callback(null, { books: book })
-  } catch (error) {
-    return callback(error, null)
-  }
+  const book = assertBook(database, bookId)
+  return { books: book }
 }
 
-function UpdateBook (call, callback, database) {
+async function UpdateBook (call, database) {
   const { bookId, data } = call.request
-  try {
-    assertBook(database, bookId)
-    const newBook = database.updateBook(bookId, data)
-    database.save()
-    return callback(null, { books: newBook })
-  } catch (error) {
-    return callback(error, null)
-  }
+  assertBook(database, bookId)
+  const newBook = database.updateBook(bookId, data)
+  database.save()
+  return { books: newBook }
 }
 
-function DeleteBook (call, callback, database) {
+async function DeleteBook (call, database) {
   const { bookId } = call.request
-  try {
-    assertBook(database, bookId)
-    database.deleteBook(bookId)
-    database.save()
-    return callback(null, {})
-  } catch (error) {
-    return callback(error, null)
-  }
+  assertBook(database, bookId)
+  database.deleteBook(bookId)
+  database.save()
 }
 
-function ListBook (_, callback, database) {
-    return callback(null, { books: database.listBooks() })
+async function ListBook (_, database) {
+  return { books: database.listBooks() }
 }
 
-function CreateBook (call, callback, database) {
+async function CreateBook (call, database) {
   const { book } = call.request
-  try {
-    const newBook = database.addBook(book)
-    database.save()
-    return callback(null, { books: newBook })
-  } catch (error) {
-    return callback(error, null)
-  }
+  const newBook = database.addBook(book)
+  database.save()
+  return { books: newBook }
 }
 
 function assertBook (database, id) {
@@ -55,12 +36,10 @@ function assertBook (database, id) {
   return book
 }
 
-module.exports = (databaseInstance) => {
-  return {
-    GetBook: inject(GetBook, databaseInstance),
-    UpdateBook: inject(UpdateBook, databaseInstance),
-    DeleteBook: inject(DeleteBook, databaseInstance),
-    ListBook: inject(ListBook, databaseInstance),
-    CreateBook: inject(CreateBook, databaseInstance)
-  }
-}
+module.exports = ({
+  GetBook,
+  UpdateBook,
+  DeleteBook,
+  ListBook,
+  CreateBook
+})

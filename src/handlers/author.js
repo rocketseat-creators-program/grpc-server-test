@@ -1,64 +1,43 @@
-const inject = require('../lib/inject')
-
-function GetAuthor (call, callback, database) {
-  try {
-    return callback(null, { authors: assertAuthor(database, call.request.authorId) })
-  } catch (error) {
-    return callback(error, null)
-  }
+async function GetAuthor (call, database) {
+  return { authors: assertAuthor(database, call.request.authorId) }
 }
 
-function UpdateAuthor (call, callback, database) {
+async function UpdateAuthor (call, database) {
   const { authorId, data } = call.request
-  try {
-    assertAuthor(database, authorId)
-    const newAuthor = database.updateAuthor(authorId, data)
-    database.save()
-    return callback(null, { authors: newAuthor })
-  } catch (error) {
-    return callback(error, null)
-  }
+  assertAuthor(database, authorId)
+  const newAuthor = database.updateAuthor(authorId, data)
+  database.save()
+  return { authors: newAuthor }
 }
 
-function DeleteAuthor (call, callback, database) {
+async function DeleteAuthor (call, database) {
   const { authorId } = call.request
-  try {
-    assertAuthor(database, authorId)
-    database.deleteAuthor(authorId)
-    database.save()
-    return callback(null, {})
-  } catch (error) {
-    return callback(error, null)
-  }
+  assertAuthor(database, authorId)
+  database.deleteAuthor(authorId)
+  database.save()
 }
 
-function ListAuthor (_, callback, database) {
-  return callback(null, { authors: database.listAuthors() })
+async function ListAuthor (_, database) {
+  return { authors: database.listAuthors() }
 }
 
-function CreateAuthor (call, callback, database) {
+async function CreateAuthor (call, database) {
   const { author } = call.request
-  try {
-    const newAuthor = database.addAuthor(author)
-    database.save()
-    return callback(null, { authors: newAuthor })
-  } catch (error) {
-    return callback(error, null)
-  }
+  const newAuthor = database.addAuthor(author)
+  database.save()
+  return { authors: newAuthor }
 }
 
-function assertAuthor (database, id) {
+async function assertAuthor (database, id) {
   const author = database.getAuthor(id)
   if (!author) throw new Error(`Author ${id} not found`)
   return author
 }
 
-module.exports = (databaseInstance) => {
-  return {
-    GetAuthor: inject(GetAuthor, databaseInstance),
-    UpdateAuthor: inject(UpdateAuthor, databaseInstance),
-    DeleteAuthor: inject(DeleteAuthor, databaseInstance),
-    ListAuthor: inject(ListAuthor, databaseInstance),
-    CreateAuthor: inject(CreateAuthor, databaseInstance)
-  }
-}
+module.exports = ({
+  GetAuthor,
+  UpdateAuthor,
+  DeleteAuthor,
+  ListAuthor,
+  CreateAuthor
+})
